@@ -81,6 +81,13 @@ public class DependenciesView extends SimpleToolWindowPanel
         ProgressManager.getInstance().run(new Task.Backgroundable(project, "Load project " + project.getName(), true)
         {
             @Override
+            public void onSuccess() {
+                tree.updateUI();
+                worker.decrementAndGet();
+                super.onSuccess();
+            }
+
+            @Override
             public void run(@NotNull ProgressIndicator indicator)
             {
                 try
@@ -89,8 +96,6 @@ public class DependenciesView extends SimpleToolWindowPanel
                     if (info != null)
                     {
                         addProject(rootNode, info, AppSettings.getInstance());
-                        tree.updateUI();
-                        worker.decrementAndGet();
                     }
                 }
                 catch (Exception e)
@@ -182,6 +187,13 @@ public class DependenciesView extends SimpleToolWindowPanel
         ProgressManager.getInstance().run(new Task.Backgroundable(project, "Check for update", true)
         {
             @Override
+            public void onSuccess() {
+                tree.updateUI();
+                worker.decrementAndGet();
+                super.onSuccess();
+            }
+
+            @Override
             public void run(@NotNull ProgressIndicator indicator)
             {
                 try
@@ -195,8 +207,6 @@ public class DependenciesView extends SimpleToolWindowPanel
                                            e.setLatestVersion(dependency.getLatestVersion());
                                            e.setStatus(null);
                                        });
-                    tree.updateUI();
-                    worker.decrementAndGet();
                 }
                 catch (Exception e)
                 {
